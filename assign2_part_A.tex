@@ -188,17 +188,70 @@
 		\hline
 		$A$ & $B$ & $C$ & $D$ & $Y$ \\
 		\hline
-		0   & x   & 0   & x   & 0   \\
-		0   & x   & 1   & x   & 1   \\
-		\hline
+		0   & 0   & 0   & 0   & 0   \\
+		0   & 0   & 0   & 1   & 0   \\
+		0   & 0   & 1   & 0   & 1   \\
+		0   & 0   & 1   & 1   & 1   \\
+		0   & 1   & 0   & 0   & 1   \\
+		0   & 1   & 0   & 1   & 0   \\
+		0   & 1   & 1   & 0   & 0   \\
+		0   & 1   & 1   & 1   & 1   \\
+		1   & 0   & 0   & 0   & 0   \\
+		1   & 0   & 0   & 1   & 0   \\
+		1   & 0   & 1   & 0   & 0   \\
+		1   & 0   & 1   & 1   & 0   \\
 		1   & 1   & 0   & 0   & 1   \\
-		1   & 1   & 1   & 0   & 0   \\
 		1   & 1   & 0   & 1   & 0   \\
+		1   & 1   & 1   & 0   & 0   \\
 		1   & 1   & 1   & 1   & 1   \\
 		\hline
 	\end{tabular}
 \end{center}
 
-Συνεπώς η εξίσωση του $Y$ είναι $Y = \bar{A} \cdot C + B \cdot \bar{C} \cdot \bar{D} + B \cdot C \cdot D$
+Παρατηρούμε ότι το $x$ δεν εξαρτάται από την τιμή του $A$ καθώς το process U2 δεν χρησιμοποιεί πουθενά το σήμα $A$.
+Συνεπώς, για το $x$ o πίνακας αληθείας είναι ο παρακάτω:
+\begin{center}
+	\begin{tabular} {|c|c|c|c|}
+		\hline
+		$B$ & $C$ & $D$ & $X$ \\
+		\hline
+		0   & 0   & 0   & 0   \\
+		0   & 0   & 1   & 1   \\
+		0   & 1   & 0   & 0   \\
+		0   & 1   & 1   & 0   \\
+		1   & 0   & 0   & 0   \\
+		1   & 0   & 1   & 0   \\
+		1   & 1   & 0   & 0   \\
+		1   & 1   & 1   & 1   \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Μπορούμε τώρα αντίστοιχα να σχεδιάσουμε τους χάρτες Karnaugh που αντιστοιχούν στο $X$ και στο $Y$:
+\begin{center}
+\begin{karnaugh-map}[4][4][1][$A$][$B$][$C$][$D$]
+\minterms{2, 3, 4, 6, 7,13,15}
+\maxterms{0,1,5,8,9,10,11,12,14}
+\implicant{3}{6}
+\implicant{13}{15}
+\implicantedge{4}{4}{6}{6}
+\end{karnaugh-map}
+\begin{karnaugh-map}[4][2][1][$B$][$C$][$D$]
+\minterms{1, 7}
+\maxterms{0, 2, 3, 4, 5, 6}
+\implicant{1}{1}
+\implicant{7}{7}
+\end{karnaugh-map}
+\end{center}
+
+Σύμφωνα με τα παραπάνω προκύπτουν οι παρακάτω εξισώσεις για τα $X$ και $Y$:
+\begin{align*}
+	Y & = B \cdot \bar{D} + C \cdot D \cdot A + \bar{D} \cdot C \cdot \bar{A} \\
+	  & = B \cdot \bar{D} + C \cdot (A \cdot D + \bar{A} \cdot \bar{D})       \\
+	  & = B \cdot \bar{D} + C \cdot \overline{D \oplus A}                     \\
+	X & = \bar{C} \cdot B \cdot \bar{D} + C \cdot B \cdot D                   \\
+	  & = B \cdot (\bar{C} \cdot \bar{D} + C \cdot D)                         \\
+	  & = B \cdot \overline{C \oplus D}
+\end{align*}
 
 \end{document}
