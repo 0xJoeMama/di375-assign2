@@ -69,6 +69,14 @@
 	f & = y + xz
 \end{align*}
 
+Μπορούμε να απλοποιήσουμε τον παραπάνω πίνακα αληθείας, επιτρέποντας μόνο στα $y$ και $z$ να μεταβληθούν.
+Για να γίνει αυτό ελέγχουμε τις τιμές της $f$ για τις διάφορες τιμές των $y$ και $z$:
+\begin{enumerate}
+  \item Για $y = 0$ και $z = 0$, ισχύει ότι: $f = y + xz = 0 + 0 \cdot x = 0$.
+  \item Για $y = 0$ και $z = 1$, ισχύει ότι: $f = y + xz = 0 + 1 \cdot x = x$.
+  \item Για $y = 1$ , ισχύει ότι: $f = y + xz = 1 + xz = 1$, λόγω του θεωρήματος του κυρίαρχου στοιχείου.
+\end{enumerate}
+Μπορούμε να απλοποιήσουμε τον παραπάνω πίνακα αληθείας, επιτρέποντας μόνο στα $y$ και $z$ να μεταβληθούν
 Επιτρέποντας τώρα μόνο στα $y$ και $z$ να μεταβληθούν προκύπτει ο παρακάτω πίνακας αληθείας:
 
 \begin{center}
@@ -92,15 +100,15 @@
 \begin{center}
 	\begin{circuitikz}
 		\ctikzset{logic ports=ieee}
-		\tikzset{mux 4to1/.style={muxdemux, muxdemux def={NL=4, NT=0, NB=2, NR=1}, muxdemux label={L1=$00$, L2=$01$, L3=$10$, L4=$11$}}}
+		\tikzset{mux 4to1/.style={muxdemux, muxdemux def={Lh=5, Rh=3,  NL=4, NT=0, NB=2, NR=1, w=2}, muxdemux label={L1=$00$, L2=$01$, L3=$10$, L4=$11$}}}
 		\draw
 		(7, 0) node[label] (f) {$f$}
 		(f) ++ (-2, 0) node[mux 4to1] (mux) {}
-		(mux) ++ (-3, 3) node[vcc] (vcc) {$V_{DD}$}
-		(mux) ++ (-2, -4) node[ground] (gnd) {$GND$}
+		(mux) ++ (-3, 2) node[vcc] (vcc) {$V_{DD}$}
+		(mux) ++ (-2, -3) node[ground] (gnd) {$GND$}
 
 		(mux.lpin 2) ++ (-4, 0) node[label] (X) {$x$}
-		(X) ++ (0, -3) node[label] (Y) {$y$}
+		(X) ++ (0, -2) node[label] (Y) {$y$}
 		(Y) ++ (0, -1) node[label] (Z) {$z$}
 
 		(mux.rpin 1) -- (f)
@@ -145,15 +153,15 @@
 		(f) ++ (-2, 0) node[mux 2to1] (mux) {}
 
 		(mux.bpin 1) ++ (0, -1) node[label] (X) {$X$}
-    (mux.lpin 2) ++ (-1, 0) node[ieeestd or port] (yorz) {}
-    (mux.lpin 1) ++ (-4, 0) node[label] (y) {$y$}
-    (yorz.in 2) ++ (-2, 0) node[label] (z) {$z$}
+		(mux.lpin 2) ++ (-1, 0) node[ieeestd or port] (yorz) {}
+		(mux.lpin 1) ++ (-4, 0) node[label] (y) {$y$}
+		(yorz.in 2) ++ (-2, 0) node[label] (z) {$z$}
 
-    (X) |- (mux.bpin 1)
-    (y) -- (mux.lpin 1)
-    (y) ++ (1, 0)  |- (yorz.in 1)
-    (z) -- (yorz.in 2)
-    (mux.rpin 1) -- (f)
+		(X) |- (mux.bpin 1)
+		(y) -- (mux.lpin 1)
+		(y) ++ (1, 0)  |- (yorz.in 1)
+		(z) -- (yorz.in 2)
+		(mux.rpin 1) -- (f)
 		;
 	\end{circuitikz}
 \end{center}
