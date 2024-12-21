@@ -1,7 +1,161 @@
-\documentclass[10pt, a4paper]{report}
-\usepackage{polyglossia}
+\documentclass[11pt, a4paper]{report}
+
 \usepackage{fontspec}
-\setmainfont{calibri}
+\setmainfont[Script=Greek]{GFS Artemisia}
+
+\usepackage{polyglossia}
+\setdefaultlanguage{greek}
+\setotherlanguages{english}
+
+\usepackage{geometry}
+\geometry{margin=3cm}
+
+\usepackage{karnaugh-map}
+\usepackage{amsmath}
+\usepackage{circuitikz}
+
 \begin{document}
-Πράγματα και θάματα
+
+% header section
+\author{Πλαστήρας Πέτρος}
+\title{Εργασία \#2 - Μέρος Α}
+\date{\today}
+\maketitle
+
+\section{Ερώτημα 1}
+Έστω ο κάτωθι πίνακας αληθείας για κύκλωμα με 3 εισόδους $x,y,z$
+και έξοδο $f$:
+
+\begin{center}
+	\begin{tabular} { | c | c | c | c |}
+		\hline
+		$x$ & $y$ & $z$ & $f$ \\
+		\hline
+		0   & 0   & 0   & 0   \\
+		0   & 0   & 1   & 0   \\
+		0   & 1   & 0   & 1   \\
+		0   & 1   & 1   & 1   \\
+		1   & 0   & 0   & 0   \\
+		1   & 0   & 1   & 1   \\
+		1   & 1   & 0   & 1   \\
+		1   & 1   & 1   & 1   \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Μπορούμε να σχεδιάσουμε τον χάρτη Karnaugh που αντιστοιχεί στον παραπάνω πίνακα αληθείας ως εξής:
+
+\begin{center}
+\begin{karnaugh-map}[4][2][1][$x$][$y$][$z$]
+\minterms{2, 3, 5, 6, 7}
+\maxterms{0,1,4}
+\end{karnaugh-map}
+\end{center}
+
+Τώρα με την χρήση του παραπάνω χάρτη Karnaugh, μπορούμε να βρούμε την εξίσωση της $f$.
+Αρχικά εντοπίζουμε τους κύκλους του χάρτη όπως φαίνεται παρακάτω:
+
+\begin{center}
+\begin{karnaugh-map}[4][2][1][$x$][$y$][$z$]
+\minterms{2, 3, 5, 6, 7}
+\maxterms{0,1,4}
+\implicant{3}{6}
+\implicant{5}{7}
+\end{karnaugh-map}
+\end{center}
+
+Από αυτό προκύπτει η παρακάτω εξίσωση για την $f$:
+\begin{align*}
+	f & = y + xz
+\end{align*}
+
+Επιτρέποντας τώρα μόνο στα $y$ και $z$ να μεταβληθούν προκύπτει ο παρακάτω πίνακας αληθείας:
+
+\begin{center}
+	\begin{tabular} { | c | c | c |}
+		\hline
+		$y$ & $z$ & $f$ \\
+		\hline
+		0   & 0   & 0   \\
+		0   & 1   & $x$ \\
+		1   & 0   & 1   \\
+		1   & 1   & 1   \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Αυτό συμβαίνει διότι αν ισχύει $y = 0$ και $z = 1$ παρατηρούμε ότι η $f$ ταυτίζεται με την τιμή του $x$.
+Από αυτό προκύπτει ξανά(ως άθροισμα γινομένων) ότι η $f$ έχει εξίσωση $f = y + yz$.
+
+Για να σχεδιάσουμε το κύκλωμα στην παραπάνω μορφή του, θα χρησιμοποιήσουμε έναν πολυπλέκτη 4 σε 1 για να υλοποιήσουμε τον απλοποιημένο πίνακα αληθείας:
+
+\begin{center}
+	\begin{circuitikz}
+		\ctikzset{logic ports=ieee}
+		\tikzset{mux 4to1/.style={muxdemux, muxdemux def={NL=4, NT=0, NB=2, NR=1}, muxdemux label={L1=$00$, L2=$01$, L3=$10$, L4=$11$}}}
+		\draw
+		(7, 0) node[label] (f) {$f$}
+		(f) ++ (-2, 0) node[mux 4to1] (mux) {}
+		(mux) ++ (-3, 3) node[vcc] (vcc) {$V_{DD}$}
+		(mux) ++ (-2, -4) node[ground] (gnd) {$GND$}
+
+		(mux.lpin 2) ++ (-4, 0) node[label] (X) {$x$}
+		(X) ++ (0, -3) node[label] (Y) {$y$}
+		(Y) ++ (0, -1) node[label] (Z) {$z$}
+
+		(mux.rpin 1) -- (f)
+		(vcc) |- (mux.lpin 3)
+		(vcc) |- (mux.lpin 4)
+		(gnd) |- (mux.lpin 1)
+		(X) -- (mux.lpin 2)
+		(Y) -| (mux.bpin 1)
+		(Z) -| (mux.bpin 2)
+
+		;
+	\end{circuitikz}
+\end{center}
+
+Αντίστοιχα μπορούμε να φτιάξουμε τον πίνακα αληθείας, κάνοντάς τον να εξαρτάται μόνο από το $x$. Για να γίνει αυτό πρέπει να βρούμε τις τιμές τις $f$ για τις διάφορες τιμές του $x$:
+
+\begin{enumerate}
+	\item Για $x = 0$, έχουμε ότι $f = y + xz = y + 0 \cdot z = y$.
+	\item Για $x = 1$, έχουμε ότι $f = y + xz = y + 1 \cdot z = y + z$.
+\end{enumerate}
+
+Με βάση τα παραπάνω ο νέος πίνακας αληθείας είναι:
+\begin{center}
+	\begin{tabular} {|c|c|}
+		\hline
+		$x$ & $f$     \\
+		\hline
+		0   & $y$     \\
+		1   & $y + z$ \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Μπορούμε τώρα να φτιάξουμε το λογικό κύκλωμα που αντιστοιχεί στον παραπάνω πίνακα αληθείας χρησιμοποιώντας έναν πολυπλέκτη 2 σε 1:
+
+\begin{center}
+	\begin{circuitikz}
+		\ctikzset{logic ports=ieee}
+		\tikzset{mux 2to1/.style={muxdemux, muxdemux def={Lh=4, Rh=2,NL=2, NT=0, NB=1, NR=1, w=2}, muxdemux label={L1=$0$, L2=$1$}}}
+		\draw
+		(7, 0) node[label] (f) {$f$}
+		(f) ++ (-2, 0) node[mux 2to1] (mux) {}
+
+		(mux.bpin 1) ++ (0, -1) node[label] (X) {$X$}
+    (mux.lpin 2) ++ (-1, 0) node[ieeestd or port] (yorz) {}
+    (mux.lpin 1) ++ (-4, 0) node[label] (y) {$y$}
+    (yorz.in 2) ++ (-2, 0) node[label] (z) {$z$}
+
+    (X) |- (mux.bpin 1)
+    (y) -- (mux.lpin 1)
+    (y) ++ (1, 0)  |- (yorz.in 1)
+    (z) -- (yorz.in 2)
+    (mux.rpin 1) -- (f)
+		;
+	\end{circuitikz}
+\end{center}
+
 \end{document}
