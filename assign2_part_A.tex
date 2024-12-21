@@ -2,6 +2,7 @@
 
 \usepackage{fontspec}
 \setmainfont[Script=Greek]{GFS Artemisia}
+\setmonofont{FreeMono}
 
 \usepackage{polyglossia}
 \setdefaultlanguage{greek}
@@ -13,6 +14,7 @@
 \usepackage{karnaugh-map}
 \usepackage{amsmath}
 \usepackage{circuitikz}
+\usepackage{minted2}
 
 \begin{document}
 
@@ -166,5 +168,37 @@
 		;
 	\end{circuitikz}
 \end{center}
+
+\section{Ερώτημα 2}
+Δίνεται ο ακόλουθος κώδικας VHDL.
+\begin{enumerate}
+	\item Να βρείτε τους πίνακες αληθείας για τα X και Υ.
+	\item Να βρείτε τους πίνακες k-map για τα x και y και κατόπιν τις ελαχιστοποιημένες εξισώσεις Boole των X, Υ με βάση τα K-maps.
+	\item Να υλοποιήσετε τη συνάρτηση Υ με τη χρήση πολυπλέκτη 4 σε 1, με εισόδους επιλογής B, C.
+\end{enumerate}
+
+\inputminted{vhdl}{./code/part-1/prompt.vhdl}
+
+Προκειμένου να βρούμε τους πίνακες αληθείας για τα $X$ και $Y$ θα χρησιμοποιήσουμε της λογική του κώδικα κι όχι δοκιμαστηκές εκτελέσεις.
+Στην U1 παρατηρούμε ότι το $Y$ παίρνει νέα τιμή το 1 σε δύο κλάδους.
+Αν το $B$ είναι 1 και το $C = D$ και αν το $Α$ είναι 0 και διάφορο του $C$ δηλαδή αν το $C$ είναι 1.
+Διαφορετικά είναι 0. Συνεπώς αυτό παραπέμπει στον παρακάτω πίνακα αληθείας:
+\begin{center}
+	\begin{tabular} {|c|c|c|c|c|}
+		\hline
+		$A$ & $B$ & $C$ & $D$ & $Y$ \\
+		\hline
+		0   & x   & 0   & x   & 0   \\
+		0   & x   & 1   & x   & 1   \\
+		\hline
+		1   & 1   & 0   & 0   & 1   \\
+		1   & 1   & 1   & 0   & 0   \\
+		1   & 1   & 0   & 1   & 0   \\
+		1   & 1   & 1   & 1   & 1   \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Συνεπώς η εξίσωση του $Y$ είναι $Y = \bar{A} \cdot C + B \cdot \bar{C} \cdot \bar{D} + B \cdot C \cdot D$
 
 \end{document}
