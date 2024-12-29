@@ -56,6 +56,5 @@ begin
     end loop;
 
     report "Hey! VSAUCE! Michael here..." severity note;
-    wait;
   end process;
 end architecture Behavioural;

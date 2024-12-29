@@ -83,7 +83,6 @@ begin
     assert Y_out = "11111100" report "bad logical shift left on negative A" severity failure;
 
     report "tests passed!" severity note;
-    wait;
   end process;
 
 end architecture behavioural;
