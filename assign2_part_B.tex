@@ -67,41 +67,41 @@
  
 Αφού έχουμε κάνει τα παραπάνω μπορούμε να κάνουμε RTL ανάλυση της οντότητάς μας. Το αποτέλεσμα φαίνεται παρακάτω:
 \begin{center}
-	\includegraphics[width=\textwidth]{./images/alu-1/Joe_RLT_ALU.png}
+	\includegraphics[width=\textwidth]{./images/alu-1/RLT_ALU.png}
 \end{center}
 
 Τρέχοντας την προσομοίωση, προκύπτει η παρακάτω κυματομορφή:
 \begin{center}
-	\includegraphics[width=\textwidth]{./images/alu-1/Joe_Behavioral_Sim_Fixed.png}
+	\includegraphics[width=\textwidth]{./images/alu-1/Behavioral_Sim_Fixed.png}
 \end{center}
 
 Στην συνέχεια μπορούμε να κάνουμε σύνθεση, η οποία δημιουργεί το παρακάτω schematic:
 \begin{center}
-  \includegraphics[width=\textwidth]{./images/alu-1/Joe_Synth_Schematic.png}
+  \includegraphics[width=\textwidth]{./images/alu-1/Synth_Schematic.png}
 \end{center}
 
 Μετά απο αυτό μπορεί να γίνει και Post-Synthesis Timing Simulation, η οποία δημιουργεί την παρακάτω κυματομορφή:
 \begin{center}
-  \includegraphics[width=\textwidth]{./images/alu-1/Joe_PST_Fixed.png}
+  \includegraphics[width=\textwidth]{./images/alu-1/PST_Fixed.png}
 \end{center}
 
 Μπορούμε να βρούμε τους πόρους που χρησιμοποιεί η υλοποίησή μας, χρησιμοποιούμε το Report Utilization το οποίο παράγει τον παρακάτω πίνακα:
 \begin{center}
-  \includegraphics[width=\textwidth]{./images/alu-1/Joe_Utilization.png}
+  \includegraphics[width=\textwidth]{./images/alu-1/Utilization.png}
 \end{center}
 
 Αυτό σημαίνει ότι χρησιμοποιούμε 24 lookup tables και 27 IO buffers για ενίσχυση του εισερχόμενου ή εξερχόμενου σήματος.
 
 Τέλος, μπορούμε να κάνουμε Report Timings και πηγαίνοντας στο Summary να δούμε τα παρακάτω σχετικά με τις καθυστερήσεις διάδοσης και μόλυνσης αντίστοιχα:
 \begin{center}
-  \includegraphics[width=\textwidth]{./images/alu-1/Joe_Setup_Time_Summury.png}
-  \includegraphics[width=\textwidth]{./images/alu-1/Joe_Hold_Time_Summury.png}
+  \includegraphics[width=\textwidth]{./images/alu-1/Setup_Time_Summury.png}
+  \includegraphics[width=\textwidth]{./images/alu-1/Hold_Time_Summury.png}
 \end{center}
 
 Από το παραπάνω, κάνοντας διπλό κλικ στο πιο αργό και στο πιο γρήγορο μονοπάτι αντίστοιχα, μπορούμε να τα δούμε πάνω στο σχεδιάγραμα:
 \begin{center}
-  \includegraphics[width=\textwidth]{./images/alu-1/Joe_Slowest_Path.png}
-  \includegraphics[width=\textwidth]{./images/alu-1/Joe_Fastest_Path.png}
+  \includegraphics[width=\textwidth]{./images/alu-1/Slowest_Path.png}
+  \includegraphics[width=\textwidth]{./images/alu-1/Fastest_Path.png}
 \end{center}
 
 \end{document}
