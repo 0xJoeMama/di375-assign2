@@ -5,7 +5,6 @@ use ieee.numeric_std.all;
 entity ALU_TB is 
 end entity ALU_TB;
 
-
 architecture Behavioural of ALU_TB is
   signal Control: std_logic_vector(1 downto 0);
   signal a: std_logic_vector(3 downto 0);

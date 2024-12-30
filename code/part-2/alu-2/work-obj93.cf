@@ -1,15 +1,20 @@
 v 4
-file . "./alu_tb.vhdl" "0e98425ea8b452a20e135e8f7664d3fef8affdba" "20241226150745.479":
-  entity alu_tb at 1( 0) + 0 on 35;
-  architecture behavioural of alu_tb at 9( 109) + 0 on 36;
-file . "./shiftlr_4bit.vhdl" "04b7f94f53aaea639f58873c70e5a34a9b221b5f" "20241225141208.800":
-  entity shiftlr_4bit at 1( 0) + 0 on 11;
-  architecture dataflow of shiftlr_4bit at 12( 230) + 0 on 12;
-file . "./rotatelr_4bit.vhdl" "a52bf0922eee134dc7aa0e6bd1ae7a6aabf9c809" "20241225141212.738":
-  entity rotatelr_4bit at 1( 0) + 0 on 13;
-  architecture dataflow of rotatelr_4bit at 12( 231) + 0 on 14;
-file . "alu.vhdl" "1bcddb1b8a3e603096a5b5fa27a2addfb76150aa" "20241226104604.115":
-  entity alu at 1( 0) + 0 on 27;
-  architecture dataflow of alu at 12( 234) + 0 on 28;
-  architecture behavioural of alu at 32( 853) + 0 on 29;
-  architecture structural of alu at 64( 1584) + 0 on 30;
+file . "./alu_tb_working.vhdl" "f94fc3272468ba70d38f5bb1efcc48142932720f" "20241230110419.941":
+  entity alu_tb_working at 1( 0) + 0 on 36;
+  architecture behavioural of alu_tb_working at 8( 125) + 0 on 37;
+file . "alu.vhdl" "1bcddb1b8a3e603096a5b5fa27a2addfb76150aa" "20241230104501.624":
+  entity alu at 1( 0) + 0 on 29;
+  architecture dataflow of alu at 12( 234) + 0 on 30;
+  architecture behavioural of alu at 32( 853) + 0 on 31;
+  architecture structural of alu at 64( 1584) + 0 on 32;
+file . "rotatelr_4bit.vhdl" "a52bf0922eee134dc7aa0e6bd1ae7a6aabf9c809" "20241230104501.612":
+  entity rotatelr_4bit at 1( 0) + 0 on 25;
+  architecture dataflow of rotatelr_4bit at 12( 231) + 0 on 26;
+file . "shiftlr_4bit.vhdl" "04b7f94f53aaea639f58873c70e5a34a9b221b5f" "20241230104501.617":
+  entity shiftlr_4bit at 1( 0) + 0 on 27;
+  architecture dataflow of shiftlr_4bit at 12( 230) + 0 on 28;
+file . "./alu_tb.vhdl" "e6e1631df1e2d69abffc6d8aa870d74e35803408" "20241230104501.631":
+  configuration cfg_tb at 69( 2197) + 0 on 35;
+file . "alu_tb.vhdl" "166f4bc672858b07eb492348e2274ca84128a9fa" "20241230110546.605":
+  entity alu_tb at 1( 0) + 0 on 40;
+  architecture behavioural of alu_tb at 8( 108) + 0 on 41;
