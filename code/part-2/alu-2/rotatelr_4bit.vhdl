@@ -1,3 +1,4 @@
+-- file: rotatelr_4bit.vhdl
 library ieee;
 use ieee.std_logic_1164.all;
 

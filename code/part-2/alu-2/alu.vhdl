@@ -62,16 +62,32 @@ begin
 end architecture Behavioural;
 
 architecture Structural of ALU is
+  component RotateLR_4bit is
+      port ( 
+        a: in std_logic_vector(3 downto 0);
+        Control: in std_logic;
+        Result: out std_logic_vector(3 downto 0)
+      );
+  end component RotateLR_4bit;
+
+  component ShiftLR_4bit is
+      port ( 
+        a: in std_logic_vector(3 downto 0);
+        Control: in std_logic;
+        Result: out std_logic_vector(3 downto 0)
+      );
+  end component ShiftLR_4bit;
+
   signal rotated_a: std_logic_vector(3 downto 0);
   signal shifted_a: std_logic_vector(3 downto 0);
 begin
-  rotator: entity work.RotateLR_4bit port map(
+  rotator: RotateLR_4bit port map(
     Control => Control(0),
     a => a,
     Result => rotated_a
   );
 
-  shifter: entity work.ShiftLR_4bit port map(
+  shifter: ShiftLR_4bit port map(
     Control => Control(0),
     a => a,
     Result => shifted_a
