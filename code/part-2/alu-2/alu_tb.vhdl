@@ -12,20 +12,20 @@ architecture Behavioural of ALU_TB is
   signal results: res_t;
 begin
   df: entity work.ALU(Dataflow) port map(
-    Control => Control,
     a => a,
+    Control => Control,
     Result => results(0)
   );
 
   beh: entity work.ALU(Behavioural) port map(
-    Control => Control,
     a => a,
+    Control => Control,
     Result => results(1)
   );
 
   struct: entity work.ALU(Structural) port map(
-    Control => Control,
     a => a,
+    Control => Control,
     Result => results(2)
   );
 

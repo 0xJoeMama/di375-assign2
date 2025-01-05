@@ -18,4 +18,3 @@ zip: $(ZIP_CONTENTS)
 
 clean:
 	rm -rf $(DOCS) *.aux *.log _minted* $(TMP) *.zip
-

@@ -29,6 +29,44 @@ begin
               (others => '0') when others;
 end architecture Dataflow;
 
+architecture Structural of ALU is
+  component RotateLR_4bit is
+      port ( 
+        a: in std_logic_vector(3 downto 0);
+        Control: in std_logic;
+        Result: out std_logic_vector(3 downto 0)
+      );
+  end component RotateLR_4bit;
+
+  component ShiftLR_4bit is
+      port ( 
+        a: in std_logic_vector(3 downto 0);
+        Control: in std_logic;
+        Result: out std_logic_vector(3 downto 0)
+      );
+  end component ShiftLR_4bit;
+
+  signal rotated_a: std_logic_vector(3 downto 0);
+  signal shifted_a: std_logic_vector(3 downto 0);
+begin
+  rotator: RotateLR_4bit port map(
+    a => a,
+    Control => Control(0),
+    Result => rotated_a
+  );
+
+  shifter: ShiftLR_4bit port map(
+    a => a,
+    Control => Control(0),
+    Result => shifted_a
+  );
+
+  with Control(1) select
+    Result <= rotated_a when '0',
+              shifted_a when '1',
+              (others => '0') when others;
+end architecture Structural;
+
 architecture Behavioural of ALU is
   signal rotated_a: std_logic_vector(3 downto 0);
   signal shifted_a: std_logic_vector(3 downto 0);
@@ -61,40 +99,3 @@ begin
   end process;
 end architecture Behavioural;
 
-architecture Structural of ALU is
-  component RotateLR_4bit is
-      port ( 
-        a: in std_logic_vector(3 downto 0);
-        Control: in std_logic;
-        Result: out std_logic_vector(3 downto 0)
-      );
-  end component RotateLR_4bit;
-
-  component ShiftLR_4bit is
-      port ( 
-        a: in std_logic_vector(3 downto 0);
-        Control: in std_logic;
-        Result: out std_logic_vector(3 downto 0)
-      );
-  end component ShiftLR_4bit;
-
-  signal rotated_a: std_logic_vector(3 downto 0);
-  signal shifted_a: std_logic_vector(3 downto 0);
-begin
-  rotator: RotateLR_4bit port map(
-    Control => Control(0),
-    a => a,
-    Result => rotated_a
-  );
-
-  shifter: ShiftLR_4bit port map(
-    Control => Control(0),
-    a => a,
-    Result => shifted_a
-  );
-
-  with Control(1) select
-    Result <= rotated_a when '0',
-              shifted_a when '1',
-              (others => '0') when others;
-end architecture Structural;

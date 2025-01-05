@@ -87,6 +87,8 @@
 	\includegraphics[width=\textwidth]{./images/alu-1/PST_Fixed.png}
 \end{center}
 
+Παρατηρούμε την σημαντική διαφορά ανάμεσα στην προσωμοίωση και το Post Synthesis Timing Simulation, ότι δηλαδή τα σήματα στο behavioural simulation αλλάζουν άμεσα, ενώ στο PSTS υπάρχει μια καθυστέρηση καθώς και θόρυβος κατά την μεταβολή του σήματος.
+
 Μπορούμε να βρούμε τους πόρους που χρησιμοποιεί η υλοποίησή μας, χρησιμοποιούμε το Report Utilization το οποίο παράγει τον παρακάτω πίνακα:
 \begin{center}
 	\includegraphics[width=\textwidth]{./images/alu-1/Utilization.png}
@@ -105,6 +107,10 @@
 	\includegraphics[width=\textwidth]{./images/alu-1/Slowest_Path.png}
 	\includegraphics[width=\textwidth]{./images/alu-1/Fastest_Path.png}
 \end{center}
+
+
+Το πιο αργό μονοπάτι παρατηρούμε ότι είναι αυτό που ξεκινά από το $C_{in}$ σήμα και πήγαινει στην έξοδο, περνώντας από μονάδες τύπου CarryLogic.
+Αντίστοιχα, το πιο γρήγορο μονοπάτι είναι από το δεύτερο bit του σήματος ελέγχου μέχρι την έξοδο, πράγμα λογικό μιας που το $S_0$ χρησιμοποιείται μόνο ως σήμα ελέγχου πολυπλέκτη και δεν συμμετέχει σε λογική.
 
 \section{Μέρος Β}
 Για την υλοποίηση της περιγραφόμενης ALU θα ξεκινήσουμε οργανώνοντας τις περιπτώσειςε εκτέλεσης.
@@ -169,12 +175,50 @@
 
 \subsection{Structural}
 Η structural αρχιτεκτονική πρέπει να χρησιμοποιεί δύο ακόμη οντότητες. Έναν περιστροφέα κι έναν ολισθητή.
-Η υλοποίησή τους είναι σχετικά εύκολη και μπορεί να γίνει με αντιγραφή του κώδικα που δίνει τιμές στα σήματα \mintinline{vhdl}{shifted_a} και \mintinline{vhdl}{rotated_a} στην την dataflow αρχιτεκτονική από την dataflow αρχιτεκτονική.
+Η υλοποίησή τους είναι σχετικά εύκολη και μπορεί να γίνει με αντιγραφή του κώδικα που δίνει τιμές στα σήματα \mintinline{vhdl}{shifted_a} και \mintinline{vhdl}{rotated_a} από την dataflow αρχιτεκτονική.
 \inputminted[breaklines, linenos]{vhdl}{./code/part-2/alu-2/shiftlr_4bit.vhdl}
 \inputminted[breaklines, linenos]{vhdl}{./code/part-2/alu-2/rotatelr_4bit.vhdl}
 
 Στην συνέχεια, αρκεί να δηλώσουμε components για τις οντότητες αυτές και να συνδέσουμε κατάλληλα τα εσωτερικά σήματα.
 Αποτέλεσμα των παραπάνω είναι ο παρακάτω κώδικας:
 \inputminted[breaklines, linenos, firstline=64]{vhdl}{./code/part-2/alu-2/alu.vhdl}
+
+\newpage
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/RLT_DF_2.png}
+  \caption{RTL διάγραμμα της Dataflow αρχιτεκτονικής}
+  \label{fig:df}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/RTL_Beh_2.png}
+  \caption{RTL διάγραμμα της Behavioural αρχιτεκτονικής}
+  \label{fig:beh}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/RTL_ALU_2.png}
+  \caption{RTL διάγραμμα της Structural αρχιτεκτονικής}
+  \label{fig:struct}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/Synth_Schem_ALU_2.png}
+  \caption{Διάγραμμα που προκύπτει μετά την φάση της σύνθεσης. Και οι τρεις αρχιτεκτονικές υλοποιούν την ίδια λογική και για αυτό το διάγραμμα της σύνθεσης είναι ίδιο για όλες τους}
+  \label{fig:synth}
+\end{figure}
+
+Μπορούμε τώρα να προχωρίσουμε στην φάση της RTL ανάλυσης. Στα σχήματα \ref{fig:df}, \ref{fig:beh}, \ref{fig:struct} φαίνονται τα διαγράμματα που προκύπτουν.
+Κατά την φάση της σύνθεσης, το schematic που προκύπτει είναι ίδιο για όλες τις αρχιτεκτονικές και φαίνεται στο σχήμα \ref{fig:synth}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/beh-sim-0.png}
+  \caption{Waveform από Behavioural Simulation. Το results(0) είναι το αποτέλεσμα της dataflow αρχιτεκτονικής, το results(1) της behavioural και το results(2) της structural}
+  \label{fig:beh_wfm}
+\end{figure}
+
+Μπορούμε και να κάνουμε προσομοίωση. Το αρχείο της προσομοίωσης μπορεί να ελέγξει και τις τρεις αρχιτεκτονικές ταυτόχρονα.
+Η κυματομορφή που προκύπτει από την προσομοίωση φαίνεται στο σχήμα \ref{fig:beh_wfm}
 
 \end{document}
