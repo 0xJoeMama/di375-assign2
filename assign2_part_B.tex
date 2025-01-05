@@ -22,6 +22,7 @@
 \date{\today}
 \maketitle
 
+% TODO: mention fastest and slowest path times not just the tables
 \section{Άσκηση 1}
 Σχεδιάστε ένα συνδυαστικό λογικό κύκλωμα σε VHDL το οποίο υλοποιεί τις ακόλουθες λογικές και αριθμητικές πράξεις (ALU) ανάλογα με τις τιμές των σημάτων $S_1, S_0, C_{in}$.
 
@@ -212,13 +213,74 @@
 Μπορούμε τώρα να προχωρίσουμε στην φάση της RTL ανάλυσης. Στα σχήματα \ref{fig:df}, \ref{fig:beh}, \ref{fig:struct} φαίνονται τα διαγράμματα που προκύπτουν.
 Κατά την φάση της σύνθεσης, το schematic που προκύπτει είναι ίδιο για όλες τις αρχιτεκτονικές και φαίνεται στο σχήμα \ref{fig:synth}
 
+Μπορούμε και να κάνουμε προσομοίωση. Το αρχείο της προσομοίωσης μπορεί να ελέγξει και τις τρεις αρχιτεκτονικές ταυτόχρονα.
+Η κυματομορφή που προκύπτει από την προσομοίωση για τιμή Control = 0, φαίνεται στο σχήμα \ref{fig:beh_wfm_0}. 
+Η κυματομορφή που προκύπτει από την εκτέλεση μόνος της αρχιτεκτονικής Dataflow, φαίνεται στο σχήμα \ref{fig:beh_overview} για όλες τις τιμές του Control σήματος.
+Το αρχείο \mintinline{vhdl}{alu_tb_simple.vhdl} μπορεί να χρησιμοποιηθεί για την δημιουργία αντίστοιχων κυματομορφών για τις άλλες αρχιτεκτοτινκές.
+
 \begin{figure}
   \includegraphics[width=\textwidth]{./images/alu-2/beh-sim-0.png}
-  \caption{Waveform από Behavioural Simulation. Το results(0) είναι το αποτέλεσμα της dataflow αρχιτεκτονικής, το results(1) της behavioural και το results(2) της structural}
-  \label{fig:beh_wfm}
+  \caption{Waveform από Behavioural Simulation για Control = 0. Το results(0) είναι το αποτέλεσμα της dataflow αρχιτεκτονικής, το results(1) της behavioural και το results(2) της structural}
+  \label{fig:beh_wfm_0}
 \end{figure}
 
-Μπορούμε και να κάνουμε προσομοίωση. Το αρχείο της προσομοίωσης μπορεί να ελέγξει και τις τρεις αρχιτεκτονικές ταυτόχρονα.
-Η κυματομορφή που προκύπτει από την προσομοίωση φαίνεται στο σχήμα \ref{fig:beh_wfm}
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/beh-sim-overview.png}
+  \caption{Waveform από behavioural simulation με την χρήση του alu\_tb\_simple αρχείου προσομοίωσης}
+  \label{fig:beh_overview}
+\end{figure}
+
+\newpage
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/pits.png}
+  \caption{Waveform που προκύπτει από το Post implementation timing simulation με την χρήση του alu\_tb\_simple αρχείου προσομοίωσης}
+  \label{fig:pits}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/impl-util.png}
+  \caption{Utilization report μετά από implementation}
+  \label{fig:util}
+\end{figure}
+
+Μπορούμε τώρα να περάσουμε στο στάδιο του implementation. Με την χρήση του \mintinline{vhdl}{alu_tb_simple.vhdl} μπορούμε για όποια αρχιτεκτονική θέλουμε να τρέξουμε Post implementation timing simulation.
+Η κυματομορφή που προκύπτει είναι ίδια για όλες τις αρχιτεκτονικές, αφού το schematic που προκύπτει είναι ίδιο και φαίνεται στο σχήμα \ref{fig:pits}. 
+Παρατηρούμε 3 σημαντικές διαφορές ανάμεσα στο σχήμα \ref{fig:pits} και στο σχήμα \ref{fig:beh_overview}:
+\begin{enumerate}
+  \item Στο Post-Implementation timing simulation, το σήμα result ξεκινά έχοντας την τιμή 'X' και μετά από ένα μικρό χρονικό διάστημα, παίρνει δεκτή μορφή, ενώ στο behavioural simulation, ξεκινά από την αρχή με την τιμή 7 την οποία ελέγχει πρώτη η προσομοίωση.
+  \item Στο Post-Implementation timing simulation, κατά την αλλαγή των τιμών εισόδου, δεν γίνεται ακαριαία η αλλαγή στις τιμές εξόδου και υπάρχει καθυστέρηση, η οποία δεν εμφανίζεται στο behavioural simulation.
+  \item Στο Post-Implementation timing simulation, η τιμή της εξόδου δεν παίρνει αμέσως την τελική της τιμή αλλά επηρεάζεται από θόρυβο, πράγμα που επίσης δεν συμβαίνει στο behavioural simulation.
+\end{enumerate}
+
+Κάνοντας report utilization  προκύπτει το σχήμα \ref{fig:util} από το οποίο φαίνεται ότι χρησιμοποιούμε 2 lookup tables των 10 IO buffers.
+Τέλος, κάνοντας timing report, μπορούμε να βρούμε τις καθυστερήσεις διάδοσης και μόλυνσης κάνοντας report timings.
+Από αυτό προκύπτει οι πίνακες που φαίνονται στα σχήματα \ref{fig:slow} και \ref{fig:fast} και αντίστοιχα η αργότερη διαδρομή(σχήμα \ref{fig:slow_path}) και η γρηγορότερη(σχήμα \ref{fig:fast_path}) διαδρομή του κυκλώματος.
+Παρατηρούμε, ότι παρόλο που όλα τα σήματα περνούν από τον ίδιο αριθμό επιπέδων λογικής, τα σήματα Control έχουν πιο γρήγορες διαδρομές από τα σήματα εισόδου.
+Αυτό πιθανό να οφείλεται στον τρόπο που υλοποιούνται τα lookup tables, μιας που στην πραγματικότητα πρόκειται για πολυπλέκτες. Αφού το σήμα Control χρησιμοποιείται ως σήμα ελέγχου, πιθανό να υπάρχει κάποιος αποδοτικός τρόπος για την υλοποίηση του στο υλικό, ο οποίος είναι πιο γρήγορος από την χρήση πίνακα αληθείας(που γίνεται συνήθως κατά την υλοποίηση συνδυαστικής λογικής σε lookup tables).
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/slow-report.png}
+  \caption{Setup times από τα οποία φαίνεται ότι η καθυστέρηση διάδοσης του κυκλώματος είναι 6.852 ns}
+  \label{fig:slow}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/fast-report.png}
+  \caption{Hold times από τα οποία φαίνεται ότι η καθυστέρηση μόλυνσης του κυκλώματος είναι 1.997 ns}
+  \label{fig:fast}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/slow-path.png}
+  \caption{Αργότερη διαδρομή του κυκλώματος που καθορίζει την καθυστέρηση διάδοσης}
+  \label{fig:slow_path}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{./images/alu-2/fast-path.png}
+  \caption{Γρηφορότερη διαδρομή του κυκλώματος που καθορίζει την καθυστέρηση μόλυνσης}
+  \label{fig:fast_path}
+\end{figure}
 
 \end{document}
