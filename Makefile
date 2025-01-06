@@ -10,6 +10,7 @@ all: $(DOCS)
 
 %.pdf: %.tex
 	$(LATEX) $(LATEX_FLAGS) $^ 
+	$(LATEX) $(LATEX_FLAGS) $^ 
 
 $(TMP):
 	mkdir -p $@
