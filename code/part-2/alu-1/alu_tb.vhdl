@@ -7,14 +7,14 @@ end entity alu_tb;
 
 architecture behavioural of alu_tb is
   component ALU is
-  port ( 
-    S1 : in STD_LOGIC;
-    S0 : in STD_LOGIC;
-    Cin : in STD_LOGIC;
-    A : in STD_LOGIC_VECTOR (7 downto 0);
-    B : in STD_LOGIC_VECTOR (7 downto 0);
-    Y : out STD_LOGIC_VECTOR (7 downto 0)
-  );
+    port ( 
+      S1 : in std_logic;
+      S0 : in std_logic;
+      Cin : in std_logic;
+      A : in std_logic_vector(7 downto 0);
+      B : in std_logic_vector(7 downto 0);
+      Y : out std_logic_vector(7 downto 0)
+    );
   end component ALU;
 
   signal i: signed(7 downto 0);
@@ -68,6 +68,7 @@ begin
 
     -- tests with negatives
     s <= "00";
+    -- Cin is still one
     i <= to_signed(-2, i'length);
     j <= to_signed(-5, i'length);
 
@@ -79,6 +80,7 @@ begin
     assert signed_Y = -1 report "bad arithmetic shift right on negative" severity failure;
 
     s <= "10";
+    -- Cin is 1
     wait for 20 ns;
     assert Y_out = "11111100" report "bad logical shift left on negative A" severity failure;
 

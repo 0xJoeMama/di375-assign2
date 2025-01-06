@@ -4,12 +4,12 @@ use ieee.numeric_std.all;
 
 entity ALU is
   port ( 
-    S1 : in STD_LOGIC;
-    S0 : in STD_LOGIC;
-    Cin : in STD_LOGIC;
-    A : in STD_LOGIC_VECTOR (7 downto 0);
-    B : in STD_LOGIC_VECTOR (7 downto 0);
-    Y : out STD_LOGIC_VECTOR (7 downto 0)
+    S1 : in std_logic;
+    S0 : in std_logic;
+    Cin : in std_logic;
+    A : in std_logic_vector(7 downto 0);
+    B : in std_logic_vector(7 downto 0);
+    Y : out std_logic_vector(7 downto 0)
   );
 end entity ALU;
 
@@ -18,7 +18,7 @@ architecture Dataflow of ALU is
   signal signed_B: signed(7 downto 0);
   signal C_vec: std_logic_vector(7 downto 0);
   signal logical_shifted_signal: std_logic_vector(7 downto 0);
-  signal S : stD_logic_vector(1 downto 0);
+  signal S : std_logic_vector(1 downto 0);
 begin
   signed_A <= signed(A);
   signed_B <= signed(B);

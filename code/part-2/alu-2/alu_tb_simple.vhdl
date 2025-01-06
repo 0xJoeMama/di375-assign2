@@ -2,9 +2,8 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-
 entity alu_tb_simple is
-end alu_tb_simple;
+end entity alu_tb_simple;
 
 architecture Behavioral of alu_tb_simple is
   signal Control: std_logic_vector(1 downto 0);
@@ -39,5 +38,4 @@ begin
 
     report "Hey! VSAUCE! Michael here..." severity note;
   end process;
-
 end Behavioral;
